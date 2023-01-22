@@ -4,9 +4,6 @@ require 'English'
 require 'net/http'
 require 'json'
 
-require 'dotenv'
-Dotenv.load
-
 def env_has_key(key)
   value = ENV[key]
   if !value.nil? && value != ''
@@ -76,19 +73,15 @@ username = env_has_key('AC_JIRA_EMAIL')
 access_key = env_has_key('AC_JIRA_TOKEN')
 issue_id = env_has_key('AC_JIRA_ISSUE')
 is_success = get_env('AC_IS_SUCCESS')
-puts "is_success #{is_success}"
 success = is_success == 'true' || is_success == 'True'
 success_id = get_env('AC_JIRA_SUCCESS_TRANSITION')
 failure_id = get_env('AC_JIRA_FAIL_TRANSITION')
 input = env_has_key('AC_JIRA_TEMPLATE')
-puts "Input #{input}"
 endpoint = "#{jira_host}/rest/api/3/issue/#{issue_id}/comment"
 payload = create_payload(input, success)
-puts "Payload #{payload}"
 puts "Posting comment for #{issue_id}"
 $stdout.flush
 result = post(payload, endpoint, username, access_key)
-puts "Result #{result}"
 puts "Comment #{result[:id]} posted"
 $stdout.flush
 

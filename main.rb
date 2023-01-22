@@ -53,9 +53,9 @@ end
 
 def create_payload(input, success)
   panel = success ? 'success' : 'error'
-  input = input.sub('$AC_JIRA_PANEL', panel)
+  input = input.sub('AC_JIRA_PANEL', panel)
   time = Time.now.utc.strftime('%m/%d/%Y %H:%M:%S')
-  input = input.sub('$AC_JIRA_DATE', time)
+  input = input.sub('AC_JIRA_DATE', time)
 
   payload = {
     body: JSON.parse(input)

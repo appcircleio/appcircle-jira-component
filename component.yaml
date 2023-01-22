@@ -62,7 +62,7 @@ inputs:
         {
           "type": "panel",
           "attrs": {
-            "panelType": "$AC_JIRA_PANEL"
+            "panelType": "AC_JIRA_PANEL"
           },
           "content": [
             {
@@ -191,7 +191,7 @@ inputs:
                       "content": [
                         {
                           "type": "text",
-                          "text": "$AC_JIRA_DATE"
+                          "text": "AC_JIRA_DATE"
                         }
                       ]
                     }

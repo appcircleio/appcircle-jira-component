@@ -7,7 +7,7 @@ Add comment to Jira Issue and optionally change the status.
 - `AC_JIRA_HOST`: Jira Host. Your Jira subdomain. Example: `mysubdomain.atlassian.net`
 - `AC_JIRA_EMAIL`: Jira Email. Email of Jira user. Please add this using **locked** environment variables.
 - `AC_JIRA_TOKEN`: API Token. User's API Token. Please add this using **locked** environment variables. You can create your token from [here](https://id.atlassian.com/manage-profile/security/api-tokens)
-- `AC_JIRA_ISSUE`: Jira Issue. The ID or key of the issue. Please check [documentation](https://docs.appcircle.io/integrations/jira-component) to learn how you can get this information from branch names or commit messages.
+- `AC_JIRA_ISSUE`: Jira Issue. The ID or key of the issue. Please check [documentation](https://docs.appcircle.io/integrations/jira-integration) to learn how you can get this information from branch names or commit messages.
 - `AC_JIRA_TEMPLATE`: Comment Template. This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build.
 
 ## Optional Inputs

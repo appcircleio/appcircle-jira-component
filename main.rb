@@ -3,6 +3,7 @@
 require 'English'
 require 'net/http'
 require 'json'
+require 'base64'
 
 def env_has_key(key)
   value = ENV[key]
@@ -24,27 +25,46 @@ def get_env(key)
   end
 end
 
-def post(payload, endpoint, username, access_key, parse = true)
+def jira_auth(access_key, username = nil)
+  if $use_pat_auth == "true"
+    return "Bearer #{access_key}"
+  else
+    if username == nil
+      abort("Missing Jira e-mail. If you will not use Personal Access Token as authorization, you must enter your Jira e-mail.")
+    end
+    return "Basic #{Base64.strict_encode64("#{username}:#{access_key}")}"
+  end
+end
+
+def handle_http_errors(response)
+  case response
+  when Net::HTTPClientError, Net::HTTPServerError
+    abort "\nError: #{response.code} #{response.message}\n#{response.body}\n\n"
+  end
+end
+
+def post(payload, endpoint, access_key, username = nil, parse = true)
   uri = URI.parse(endpoint)
   req = Net::HTTP::Post.new(uri.request_uri,
                             { 'Content-Type' => 'application/json' })
-  req.basic_auth(username, access_key)
+  req['Authorization'] = jira_auth(access_key, username)
   req.body = payload
-  req.basic_auth(username, access_key)
   res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
     http.request(req)
   end
+  handle_http_errors(res)
   JSON.parse(res.body, symbolize_names: true) if parse
 end
 
-def get(endpoint, username, access_key)
+def get(endpoint, access_key, username = nil)
   uri = URI.parse(endpoint)
   req = Net::HTTP::Get.new(uri.request_uri,
                            { 'Accept' => 'application/json' })
-  req.basic_auth(username, access_key)
+  req['Authorization'] = jira_auth(access_key, username)
   res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
     http.request(req)
   end
+  handle_http_errors(res)
   JSON.parse(res.body, symbolize_names: true)
 end
 
@@ -69,7 +89,7 @@ def transitionid(id, transitions)
 end
 
 jira_host = env_has_key('AC_JIRA_HOST')
-username = env_has_key('AC_JIRA_EMAIL')
+username = get_env('AC_JIRA_EMAIL')
 access_key = env_has_key('AC_JIRA_TOKEN')
 issue_id = env_has_key('AC_JIRA_ISSUE')
 is_success = get_env('AC_IS_SUCCESS')
@@ -77,17 +97,20 @@ success = is_success == 'true' || is_success == 'True'
 success_id = get_env('AC_JIRA_SUCCESS_TRANSITION')
 failure_id = get_env('AC_JIRA_FAIL_TRANSITION')
 input = env_has_key('AC_JIRA_TEMPLATE')
-endpoint = "#{jira_host}/rest/api/3/issue/#{issue_id}/comment"
+$use_pat_auth = get_env('AC_JIRA_USE_PAT_AUTH') || false
+rest_api_version = env_has_key('AC_JIRA_REST_API_VERSION').to_i
+endpoint = "#{jira_host}/rest/api/#{rest_api_version}/issue/#{issue_id}"
+comment_endpoint = endpoint + "/comment"
 payload = create_payload(input, success)
 puts "Posting comment for #{issue_id}"
 $stdout.flush
-result = post(payload, endpoint, username, access_key)
+result = post(payload, comment_endpoint, access_key, username, true)
 puts "Comment #{result[:id]} posted"
 $stdout.flush
 
 if success_id || failure_id
-  endpoint = "#{jira_host}/rest/api/3/issue/#{issue_id}/transitions"
-  result = get(endpoint, username, access_key)
+  transitions_endpoint = endpoint + "/transitions"
+  result = get(transitions_endpoint, access_key, username)
   if success
     id = transitionid(success_id, result)
     puts 'Workflow succeeded'
@@ -98,8 +121,7 @@ if success_id || failure_id
   puts "Transition ID: #{id}"
   $stdout.flush
 
-  endpoint = "#{jira_host}/rest/api/3/issue/#{issue_id}/transitions"
   payload = "{\"transition\":{\"id\":\"#{id}\"}}"
-  post(payload, endpoint, username, access_key, false)
+  post(payload, transitions_endpoint, access_key, username, false)
   puts "Issue transitioned to #{id}"
 end

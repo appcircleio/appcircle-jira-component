@@ -47,6 +47,7 @@ inputs:
 - key: "AC_JIRA_USE_PAT_AUTH"
   defaultValue: "false"
   isRequired: false
+  editorType: select
   options: "true,false"
   title: Use Personal Access Token for Jira Authentication
   description: "Specify whether to use Personal Access Token (PAT) as the authentication type for Jira. If this value is set to `false`, the Jira e-mail field must be filled for Basic Authentication."

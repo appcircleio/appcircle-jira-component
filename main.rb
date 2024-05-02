@@ -74,8 +74,12 @@ def create_payload(input, success)
   time = Time.now.utc.strftime('%m/%d/%Y %H:%M:%S')
   input = input.sub('AC_JIRA_DATE', time)
 
+  if $rest_api_version != 2
+    input = JSON.parse(input)
+  end
+
   payload = {
-    body: JSON.parse(input)
+    body: input
   }
   payload.to_json
 end
@@ -102,8 +106,8 @@ success = is_success == 'true' || is_success == 'True'
 success_id = get_env('AC_JIRA_SUCCESS_TRANSITION')
 failure_id = get_env('AC_JIRA_FAIL_TRANSITION')
 input = env_has_key('AC_JIRA_TEMPLATE')
-rest_api_version = env_has_key('AC_JIRA_REST_API_VERSION').to_i
-endpoint = "#{jira_host}/rest/api/#{rest_api_version}/issue/#{issue_id}"
+$rest_api_version = env_has_key('AC_JIRA_REST_API_VERSION').to_i
+endpoint = "#{jira_host}/rest/api/#{$rest_api_version}/issue/#{issue_id}"
 comment_endpoint = endpoint + "/comment"
 payload = create_payload(input, success)
 puts "Posting comment for #{issue_id}"

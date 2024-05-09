@@ -115,7 +115,7 @@ is_success = get_env('AC_IS_SUCCESS')
 success = is_success == 'true' || is_success == 'True'
 success_id = get_env('AC_JIRA_SUCCESS_TRANSITION')
 failure_id = get_env('AC_JIRA_FAIL_TRANSITION')
-input = env_has_key('AC_JIRA_TEMPLATE')
+input = get_env('AC_JIRA_TEMPLATE_V2') || env_has_key('AC_JIRA_TEMPLATE_V3')
 $rest_api_version = env_has_key('AC_JIRA_REST_API_VERSION').to_i
 endpoint = "#{jira_host}/rest/api/#{$rest_api_version}/issue/#{issue_id}"
 comment_endpoint = endpoint + "/comment"

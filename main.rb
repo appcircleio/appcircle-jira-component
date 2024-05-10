@@ -51,6 +51,21 @@ def handle_http_errors(response)
   end
 end
 
+def set_jira_api_version()
+  jira_template_v2 = get_env('AC_JIRA_TEMPLATE_V2')
+  jira_template_v3 = get_env('AC_JIRA_TEMPLATE_V3')
+
+  if !jira_template_v2.nil?
+    $input = jira_template_v2
+    $rest_api_version = 2
+  elsif !jira_template_v3.nil?
+    $input = jira_template_v3
+    $rest_api_version = 3
+  else
+    abort("Please fill in Comment Template (either the AC_JIRA_TEMPLATE_V2 or AC_JIRA_TEMPLATE_V3) variable to proceed.")
+  end
+end
+
 def post(payload, endpoint, jira_token, username = nil, parse = true)
   uri = URI.parse(endpoint)
   req = Net::HTTP::Post.new(uri.request_uri,
@@ -76,18 +91,18 @@ def get(endpoint, jira_token, username = nil)
   JSON.parse(res.body, symbolize_names: true)
 end
 
-def create_payload(input, success)
+def create_payload(success)
   panel = success ? 'success' : 'error'
-  input = input.sub('AC_JIRA_PANEL', panel)
+  $input = $input.sub('AC_JIRA_PANEL', panel)
   time = Time.now.utc.strftime('%m/%d/%Y %H:%M:%S')
-  input = input.sub('AC_JIRA_DATE', time)
+  $input = $input.sub('AC_JIRA_DATE', time)
 
   if $rest_api_version != 2
-    input = JSON.parse(input)
+    $input = JSON.parse($input)
   end
 
   payload = {
-    body: input
+    body: $input
   }
   payload.to_json
 end
@@ -115,11 +130,10 @@ is_success = get_env('AC_IS_SUCCESS')
 success = is_success == 'true' || is_success == 'True'
 success_id = get_env('AC_JIRA_SUCCESS_TRANSITION')
 failure_id = get_env('AC_JIRA_FAIL_TRANSITION')
-input = get_env('AC_JIRA_TEMPLATE_V2') || env_has_key('AC_JIRA_TEMPLATE_V3')
-$rest_api_version = env_has_key('AC_JIRA_REST_API_VERSION').to_i
+set_jira_api_version()
 endpoint = "#{jira_host}/rest/api/#{$rest_api_version}/issue/#{issue_id}"
 comment_endpoint = endpoint + "/comment"
-payload = create_payload(input, success)
+payload = create_payload(success)
 puts "Posting comment for #{issue_id}"
 $stdout.flush
 result = post(payload, comment_endpoint, jira_token, username, true)

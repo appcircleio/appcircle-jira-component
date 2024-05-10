@@ -53,7 +53,13 @@ inputs:
   title: Success Transition
   description: "Transition ID or name for the successful step. If the previous state succeeds, you can optionally change the status of your issue."
   helpText:
-- key: "AC_JIRA_TEMPLATE"
+- key: "AC_JIRA_TEMPLATE_V2"
+  defaultValue: "Commit ID: $AC_GIT_COMMIT | Git Branch: $AC_GIT_BRANCH | Commit Message: $AC_COMMIT_MESSAGE | Appcircle Workflow Name: $AC_WORKFLOW_NAME | Date (UTC): AC_JIRA_DATE" 
+  isRequired: false
+  title: Comment Template
+  description: "This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build. In Jira API version **2**, templates can only be sent as text. To modify the Jira API version, adjust it on the component version. For instance, to utilize API version `3`, update the component version to `3.0.*`. Explore the [Jira comment documentation](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment/#jira-rest-api-version-reference) for further details."
+  helpText:
+- key: "AC_JIRA_TEMPLATE_V3"
   defaultValue: |
       {
       "version": 1,
@@ -217,10 +223,10 @@ inputs:
         }
       ]
       } 
-  isRequired: true
+  isRequired: false
   editorType: textarea
   title: Comment Template
-  description: "This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build."
+  description: "This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build. In Jira API version **3**, templates can be sent different type via JSON. To modify the Jira API version, adjust it on the component version. For instance, to utilize API version `2`, update the component version to `2.0.*`. Explore the [Jira comment documentation](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment/#jira-rest-api-version-reference) for further details."
   helpText:
 outputs:
 processFilename: ruby

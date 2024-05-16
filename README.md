@@ -10,10 +10,10 @@ Add comment to Jira Issue and optionally change the status.
 
 ## Optional Inputs
 
-- `AC_JIRA_EMAIL`: Email of Jira user. This field is **required** for those using API tokens (`AC_JIRA_TOKEN`) instead of PAT. Please add this using **locked** environment variables.
-- `AC_JIRA_TOKEN`: User's API Token. If this value is fill, the Jira e-mail field must be filled. Only Jira Cloud users can use API Token. You can create token from [here](https://id.atlassian.com/manage-profile/security/api-tokens).
-- `AC_JIRA_PAT`: Specify the Personal Access Token for Jira authentication. Only Jira On-Prem users can use PAT.
-- `AC_JIRA_FAIL_TRANSITION`: Transition ID or name for the failed step. Optionally change the status of your issue if the previous state fails. Ensure that the `Always run this step even if the previous steps fail` switch is enabled for this feature to work.
+- `AC_JIRA_EMAIL`: Email of Jira user. This field is **required** for those using API tokens instead of PAT. Please add this using **locked** environment variables.
+- `AC_JIRA_TOKEN`: User's API Token. If this value is filled, the Jira e-mail field must also be filled. Only Jira Cloud users can use API token. You can create token from [here](https://id.atlassian.com/manage-profile/security/api-tokens).
+- `AC_JIRA_PAT`: Specify the Personal Access Token (PAT) for Jira authentication. Only Jira On-Prem users can use PAT.
+- `AC_JIRA_FAIL_TRANSITION`: Transition ID or name for the failed step. Optionally change the status of your issue if the previous state fails. Ensure that the "Always run this step even if the previous steps fail" switch is enabled for this feature to work.
 - `AC_JIRA_SUCCESS_TRANSITION`: Transition ID or name for the successful step. Optionally change the status of your issue if the previous state succeeds.
 
 ## Contributing

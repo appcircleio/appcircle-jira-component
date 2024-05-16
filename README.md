@@ -5,8 +5,8 @@ Add comment to Jira Issue and optionally change the status.
 ## Required Inputs
 
 - `AC_JIRA_HOST`: Jira Host. Your Jira subdomain. Example: `mysubdomain.atlassian.net`
-- `AC_JIRA_ISSUE`: Jira Issue. The ID or key of the issue. Please check [documentation](https://docs.appcircle.io/integrations/jira-integration) to learn how you can get this information from branch names or commit messages.
-- `AC_JIRA_TEMPLATE`: Comment Template. This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build. Refer to [this documentation](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment/#changing-template) to modify the template.
+- `AC_JIRA_ISSUE`: Jira Issue. The ID or key of the issue. Please check [documentation](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment) to learn how you can get this information from branch names or commit messages.
+- `AC_JIRA_TEMPLATE`: Comment Template. This comment template will be used to post a comment. Variables donated with `$` will be replaced during the build. Refer to [documentation](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment#changing-template) to modify the template.
 
 ## Optional Inputs
 

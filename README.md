@@ -18,4 +18,9 @@ Add comment to Jira Issue and optionally change the status.
 
 ## Contributing
 
-When contributing to the **Jira Comment** repository, it's important to note that the comment input types depend on the Jira REST API version. Therefore, the repository has different versions in the [Workflow Components repository](https://github.com/appcircleio/appcircle-workflow-components): component version `2.*.*` for Jira API version 2 and component version `3.*.*` for Jira API version 3. Be sure to select the appropriate component version based on the Jira REST API version you are working with. For more detailed information, refer to the [Jira Comment](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment/#jira-rest-api-version-reference) documentation.
+When contributing to the **Jira Comment** repository, it's important to note that the comment input types depend on the Jira REST API version. Therefore, the repository has different versions in the [Workflow Components](https://github.com/appcircleio/appcircle-workflow-components) repository:
+
+- component version `2.*.*` for Jira API version 2
+- component version `3.*.*` for Jira API version 3
+
+Be sure to select the appropriate component version based on the Jira REST API version you are working with. For more detailed information, refer to the [Jira Comment](https://docs.appcircle.io/workflows/common-workflow-steps/jira-comment#jira-rest-api-version-reference) documentation.

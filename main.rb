@@ -109,7 +109,7 @@ end
 
 def transitionid(id, transitions)
   if is_integer?(id)
-    success_id
+    id
   else
     transitions[:transitions].find { |t| t[:name].casecmp(id).zero? }[:id]
   end

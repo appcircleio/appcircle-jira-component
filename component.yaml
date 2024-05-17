@@ -7,7 +7,7 @@ inputs:
   defaultValue: "$AC_JIRA_HOST"
   isRequired: true
   title: Jira Host
-  description: "Your Jira subdomain. Example: `mysubdomain.atlassian.net`"  
+  description: "Your Jira subdomain. Example: `https://mysubdomain.atlassian.net`"  
   helpText:
 - key: "AC_JIRA_EMAIL"
   defaultValue: "$AC_JIRA_EMAIL"
@@ -47,11 +47,11 @@ inputs:
   helpText:
 - key: "AC_JIRA_TEMPLATE_V2"
   defaultValue: |
-    - **Date (UTC)**: AC_JIRA_DATE 
-    - **Appcircle Workflow Name**: $AC_WORKFLOW_NAME 
-    - **Commit ID**: $AC_GIT_COMMIT
-    - **Git Branch**: $AC_GIT_BRANCH 
-    - **Commit Message**: $AC_COMMIT_MESSAGE
+    - *Date (UTC)*: AC_JIRA_DATE 
+    - *Appcircle Workflow Name*: $AC_WORKFLOW_NAME 
+    - *Commit ID*: $AC_GIT_COMMIT
+    - *Git Branch*: $AC_GIT_BRANCH 
+    - *Commit Message*: $AC_COMMIT_MESSAGE
   isRequired: false
   editorType: textarea
   title: Comment Template

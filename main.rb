@@ -116,8 +116,8 @@ def transitionid(id, transitions)
 end
 
 jira_host = env_has_key('AC_JIRA_HOST')
-commit_message = env_has_key('AC_COMMIT_MESSAGE')
-clean_commit_message(commit_message)
+commit_message = get_env('AC_COMMIT_MESSAGE')
+clean_commit_message(commit_message) if commit_message
 username = get_env('AC_JIRA_EMAIL')
 access_key = get_env('AC_JIRA_TOKEN')
 $jira_pat = get_env('AC_JIRA_PAT')

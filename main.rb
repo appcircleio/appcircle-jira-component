@@ -65,6 +65,7 @@ def set_jira_api_version()
     abort("Please fill in Comment Template (either the AC_JIRA_TEMPLATE_V2 or AC_JIRA_TEMPLATE_V3) variable to proceed.")
   end
 
+  $input = $input.gsub(/\R+/, ' ')
   puts "Comment template is : #{$input}"
 end
 

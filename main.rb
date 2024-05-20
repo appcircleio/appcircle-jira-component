@@ -64,6 +64,8 @@ def set_jira_api_version()
   else
     abort("Please fill in Comment Template (either the AC_JIRA_TEMPLATE_V2 or AC_JIRA_TEMPLATE_V3) variable to proceed.")
   end
+
+  $input = $input.gsub(/\R+/, ' ')
 end
 
 def post(payload, endpoint, jira_token, username = nil, parse = true)

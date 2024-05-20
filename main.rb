@@ -66,7 +66,6 @@ def set_jira_api_version()
   end
 
   $input = $input.gsub(/\R+/, ' ')
-  puts "Comment template is : #{$input}"
 end
 
 def post(payload, endpoint, jira_token, username = nil, parse = true)

@@ -25,14 +25,6 @@ def get_env(key)
   end
 end
 
-def clean_commit_message(commit_message)
-  commit_message_without_line = commit_message.gsub("\n", "")
-  File.open(ENV['AC_ENV_FILE_PATH'], 'a') do |f|
-    f.puts "AC_COMMIT_MESSAGE=#{commit_message_without_line}"
-  end
-end
-
-
 def jira_auth(jira_token, username = nil)
   if $jira_pat != nil
     return "Bearer #{jira_token}"
@@ -64,6 +56,8 @@ def set_jira_api_version()
   else
     abort("Please fill in Comment Template (either the AC_JIRA_TEMPLATE_V2 or AC_JIRA_TEMPLATE_V3) variable to proceed.")
   end
+
+  $input = $input.gsub(/\R+/, ' ')
 end
 
 def post(payload, endpoint, jira_token, username = nil, parse = true)
@@ -116,8 +110,6 @@ def transitionid(id, transitions)
 end
 
 jira_host = env_has_key('AC_JIRA_HOST')
-commit_message = get_env('AC_COMMIT_MESSAGE')
-clean_commit_message(commit_message) if commit_message
 username = get_env('AC_JIRA_EMAIL')
 access_key = get_env('AC_JIRA_TOKEN')
 $jira_pat = get_env('AC_JIRA_PAT')
